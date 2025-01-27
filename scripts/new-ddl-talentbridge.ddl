@@ -7,7 +7,7 @@ CREATE TABLE Usuario (
     idUsuario INT PRIMARY KEY IDENTITY(1,1),
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-    fotoPerfil VARBINARY(MAX)
+    senha VARCHAR(MAX) NOT NULL
 );
 
 -- Tabela Endereco
