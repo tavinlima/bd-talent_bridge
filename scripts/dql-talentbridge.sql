@@ -62,3 +62,7 @@ WHERE idioma = 'Francês'
 -- Mostre todos as vagas indisponíveis
 SELECT * FROM Vagas
 WHERE disponivel = 0
+
+--UPDATE Vagas
+SET disponivel = 0 
+WHERE idVaga = 1

@@ -26,16 +26,16 @@ CREATE TABLE Contato (
 -- Tabela Usuário
 CREATE TABLE Usuario (
     idUsuario INT PRIMARY KEY IDENTITY(1,1),
-    idEndereco INT FOREIGN KEY REFERENCES Endereco(idEndereco),
-    idContato INT FOREIGN KEY REFERENCES Contato(idContato),
+    idEndereco INT FOREIGN KEY REFERENCES Endereco(idEndereco) ON DELETE CASCADE,
+    idContato INT FOREIGN KEY REFERENCES Contato(idContato)  ON DELETE CASCADE,
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-    fotoPerfil VARBINARY(MAX)
+	senha VARCHAR(MAX) NOT NULL
 );
 
 -- Tabela Candidato
 CREATE TABLE Candidato (
-    idUsuario INT FOREIGN KEY REFERENCES Usuario(idUsuario),
+    idUsuario INT FOREIGN KEY REFERENCES Usuario(idUsuario) ON DELETE CASCADE,
     CPF CHAR(11) PRIMARY KEY NOT NULL,
     dataNascimento DATE NOT NULL,
 );
@@ -43,7 +43,7 @@ CREATE TABLE Candidato (
 -- Tabela Empresa
 CREATE TABLE Empresa (
     CNPJ CHAR(14) PRIMARY KEY,
-    idUsuario INT FOREIGN KEY REFERENCES Usuario(idUsuario),
+    idUsuario INT FOREIGN KEY REFERENCES Usuario(idUsuario) ON DELETE CASCADE,
     descricao VARCHAR(500),
     avaliacao DECIMAL(3, 2) CHECK (avaliacao BETWEEN 0 AND 5)
 );
@@ -51,7 +51,7 @@ CREATE TABLE Empresa (
 -- Tabela Escolaridade
 CREATE TABLE Escolaridade (
     idEscolaridade INT PRIMARY KEY IDENTITY(1,1),
-    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF),
+    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF) ON DELETE CASCADE,
     titulo VARCHAR(100),
     descricao VARCHAR(500),
     dataInicio DATE,
@@ -61,17 +61,18 @@ CREATE TABLE Escolaridade (
 -- Tabela Experiencia
 CREATE TABLE Experiencia (
     idExperiencia INT PRIMARY KEY IDENTITY(1,1),
-    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF),
+    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF) ON DELETE CASCADE,
     titulo VARCHAR(100),
     descricao VARCHAR(500),
     dataInicio DATE,
     dataConclusao DATE
+	--flag emprego atual
 );
 
 -- Tabela Skills
 CREATE TABLE Skills (
     idSkill INT PRIMARY KEY IDENTITY(1,1),
-    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF),
+    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF) ON DELETE CASCADE,
     titulo VARCHAR(100),
     descricao VARCHAR(100),
 );
@@ -79,7 +80,7 @@ CREATE TABLE Skills (
 -- Tabela Projeto
 CREATE TABLE Projeto (
     idProjeto INT PRIMARY KEY IDENTITY(1,1),
-    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF),
+    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF) ON DELETE CASCADE,
     titulo VARCHAR(100),
     descricao VARCHAR(500),
     dataInicio DATE,
@@ -89,7 +90,7 @@ CREATE TABLE Projeto (
 -- Tabela Certificacao
 CREATE TABLE Certificacao (
     idCertificacao INT PRIMARY KEY IDENTITY(1,1),
-    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF),
+    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF) ON DELETE CASCADE,
     titulo VARCHAR(100),
     descricao VARCHAR(500),
     dataConclusao DATE
@@ -98,7 +99,7 @@ CREATE TABLE Certificacao (
 -- Tabela Idioma
 CREATE TABLE Idioma (
     idIdioma INT PRIMARY KEY IDENTITY(1,1),
-    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF),
+    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF) ON DELETE CASCADE,
 	fluencia VARCHAR(50) NOT NULL,
     idioma VARCHAR(50)
 );
@@ -106,7 +107,7 @@ CREATE TABLE Idioma (
 -- Tabela Vagas
 CREATE TABLE Vagas (
     idVaga INT PRIMARY KEY IDENTITY(1,1),
-    CNPJ CHAR(14) FOREIGN KEY REFERENCES Empresa(CNPJ),
+    CNPJ CHAR(14) FOREIGN KEY REFERENCES Empresa(CNPJ) ON DELETE CASCADE,
 	dataInicio SMALLDATETIME NOT NULL,
 	DataFim SMALLDATETIME NOT NULL,
     descricao VARCHAR(500),
@@ -119,14 +120,14 @@ CREATE TABLE Vagas (
 -- Tabela Requisitos
 CREATE TABLE Requisitos (
     idRequisitos INT PRIMARY KEY IDENTITY(1,1),
-    idVaga INT FOREIGN KEY REFERENCES Vagas(idVaga),
+    idVaga INT FOREIGN KEY REFERENCES Vagas(idVaga) ON DELETE CASCADE,
     requisito VARCHAR(50)
 );
 
 -- Tabela Aplicações
 CREATE TABLE Aplicacoes (
     idAplicacao INT PRIMARY KEY IDENTITY(1,1),
-    idVaga INT FOREIGN KEY REFERENCES Vagas(idVaga),
+    idVaga INT FOREIGN KEY REFERENCES Vagas(idVaga) ON DELETE CASCADE,
     CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF),
 	dataCandidatura SMALLDATETIME NOT NULL,
 	observacoes VARCHAR(500),
