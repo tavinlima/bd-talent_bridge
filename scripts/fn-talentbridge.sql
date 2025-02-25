@@ -1,3 +1,6 @@
+USE TalentBridge
+
+--Mostra a quantidade de candidatos maiores de idade
 GO
 CREATE FUNCTION fn_candidatos_maiores_idade()
 RETURNS INT
@@ -13,6 +16,7 @@ SELECT dbo.fn_candidatos_maiores_idade() AS QTD
 SELECT * FROM Candidato
 GO
 
+--Mostra a quantidade de candidatos maiores de idade que se candidataram em uma vaga
 GO
 CREATE FUNCTION fn_candidatos_maiores_idade_na_vaga(@idVaga INT)
 RETURNS INT
@@ -31,6 +35,7 @@ SELECT dbo.fn_candidatos_maiores_idade_na_vaga(1) AS QTD
 SELECT * FROM Vagas
 GO
 
+-- Mostra todas as vagas com o título informado pelo usuário
 CREATE FUNCTION fn_vagas_por_titulo(@titulo VARCHAR(100))
 RETURNS TABLE AS 
 RETURN

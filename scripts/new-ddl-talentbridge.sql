@@ -6,8 +6,9 @@ USE TalentBridge
 CREATE TABLE Usuario (
     idUsuario INT PRIMARY KEY IDENTITY(1,1),
     nome VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    senha VARCHAR(MAX) NOT NULL
+	biografia VARCHAR(500),
+    senha VARCHAR(MAX) NOT NULL,
+	ativado bit NOT NULL,
 );
 
 -- Tabela Endereco
@@ -29,29 +30,52 @@ CREATE TABLE Endereco (
 CREATE TABLE Contato (
     idContato INT PRIMARY KEY IDENTITY(1,1),
 	idUsuario INT FOREIGN KEY REFERENCES Usuario(idUsuario) ON DELETE CASCADE,
-    tipoContato VARCHAR(50),
-    numero VARCHAR(14)
+    tipoContato VARCHAR(50)
+);
+
+CREATE TABLE Email (
+	idEmail INT PRIMARY KEY IDENTITY(1,1),
+	idContato INT FOREIGN KEY REFERENCES Contato(idContato) ON DELETE CASCADE,
+	email VARCHAR(100) UNIQUE NOT NULL
+)
+
+CREATE TABLE Telefone (
+	idTelefone INT PRIMARY KEY IDENTITY(1,1),
+	idContato INT FOREIGN KEY REFERENCES Contato(idContato) ON DELETE CASCADE,
+	telefone VARCHAR(14)
+)
+
+CREATE TABLE Website (
+	idSite INT PRIMARY KEY IDENTITY(1,1),
+	idContato INT FOREIGN KEY REFERENCES Contato(idContato) ON DELETE CASCADE,
+	website VARCHAR(100)
+)
+
+CREATE TABLE Documento (
+	idDocumento INT PRIMARY KEY IDENTITY(1,1),
+	tipoDocumento VARCHAR(100) NOT NULL,
+	valor VARCHAR(15) UNIQUE
 );
 
 -- Tabela Candidato
 CREATE TABLE Candidato (
-    idUsuario INT FOREIGN KEY REFERENCES Usuario(idUsuario)  ON DELETE CASCADE,
-    CPF CHAR(11) PRIMARY KEY NOT NULL,
+	idCandidato INT PRIMARY KEY IDENTITY(1,1),
+    idUsuario INT FOREIGN KEY REFERENCES Usuario(idUsuario) ON DELETE CASCADE,
     dataNascimento DATE NOT NULL,
 );
 
 -- Tabela Empresa
 CREATE TABLE Empresa (
-    CNPJ CHAR(14) PRIMARY KEY,
-    idUsuario INT FOREIGN KEY REFERENCES Usuario(idUsuario)  ON DELETE CASCADE,
-    descricao VARCHAR(500),
-    avaliacao DECIMAL(3, 2) CHECK (avaliacao BETWEEN 0 AND 5)
+	idEmpresa INT PRIMARY KEY IDENTITY(1,1),
+	idUsuario INT FOREIGN KEY REFERENCES Usuario(idUsuario) ON DELETE CASCADE,
+    CNPJ CHAR(14) UNIQUE NOT NULL,
+	setor VARCHAR(50)
 );
 
 -- Tabela Escolaridade
 CREATE TABLE Escolaridade (
     idEscolaridade INT PRIMARY KEY IDENTITY(1,1),
-    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF),
+    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF) ON DELETE CASCADE,
     titulo VARCHAR(100),
     descricao VARCHAR(500),
     dataInicio DATE,
@@ -61,9 +85,10 @@ CREATE TABLE Escolaridade (
 -- Tabela Experiencia
 CREATE TABLE Experiencia (
     idExperiencia INT PRIMARY KEY IDENTITY(1,1),
-    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF),
+    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF) ON DELETE CASCADE,
     titulo VARCHAR(100),
     descricao VARCHAR(500),
+	atual bit,
     dataInicio DATE,
     dataConclusao DATE
 );
@@ -71,7 +96,7 @@ CREATE TABLE Experiencia (
 -- Tabela Skills
 CREATE TABLE Skills (
     idSkill INT PRIMARY KEY IDENTITY(1,1),
-    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF),
+    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF) ON DELETE CASCADE,
     titulo VARCHAR(100),
     descricao VARCHAR(100),
 );
@@ -79,7 +104,7 @@ CREATE TABLE Skills (
 -- Tabela Projeto
 CREATE TABLE Projeto (
     idProjeto INT PRIMARY KEY IDENTITY(1,1),
-    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF),
+    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF) ON DELETE CASCADE,
     titulo VARCHAR(100),
     descricao VARCHAR(500),
     dataInicio DATE,
@@ -89,7 +114,7 @@ CREATE TABLE Projeto (
 -- Tabela Certificacao
 CREATE TABLE Certificacao (
     idCertificacao INT PRIMARY KEY IDENTITY(1,1),
-    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF),
+    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF) ON DELETE CASCADE,
     titulo VARCHAR(100),
     descricao VARCHAR(500),
     dataConclusao DATE
@@ -98,7 +123,7 @@ CREATE TABLE Certificacao (
 -- Tabela Idioma
 CREATE TABLE Idioma (
     idIdioma INT PRIMARY KEY IDENTITY(1,1),
-    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF),
+    CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF) ON DELETE CASCADE,
 	fluencia VARCHAR(50) NOT NULL,
     idioma VARCHAR(50)
 );
@@ -106,7 +131,7 @@ CREATE TABLE Idioma (
 -- Tabela Vagas
 CREATE TABLE Vagas (
     idVaga INT PRIMARY KEY IDENTITY(1,1),
-    CNPJ CHAR(14) FOREIGN KEY REFERENCES Empresa(CNPJ),
+    CNPJ CHAR(14) FOREIGN KEY REFERENCES Empresa(CNPJ) ON DELETE CASCADE,
 	dataInicio SMALLDATETIME NOT NULL,
 	DataFim SMALLDATETIME NOT NULL,
     descricao VARCHAR(500),
@@ -124,8 +149,8 @@ CREATE TABLE Requisitos (
 );
 
 -- Tabela Aplicações
-CREATE TABLE Aplicacoes (
-    idAplicacao INT PRIMARY KEY IDENTITY(1,1),
+CREATE TABLE Candidatura (
+    idCandidatura INT PRIMARY KEY IDENTITY(1,1),
     idVaga INT FOREIGN KEY REFERENCES Vagas(idVaga),
     CPF CHAR(11) FOREIGN KEY REFERENCES Candidato(CPF),
 	dataCandidatura SMALLDATETIME NOT NULL,

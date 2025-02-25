@@ -1,3 +1,5 @@
+USE TalentBridge
+
 -- Impede que vagas com candidaturas sejam excluídas
 CREATE TRIGGER TGR_Block_Delete_Vaga
 ON Vagas
@@ -77,9 +79,9 @@ VALUES
 ('Telefone principal', '+5510975543210')
 
 -- Inserir dados na tabela Usuario
-INSERT INTO Usuario (idEndereco, idContato, nome, email, fotoPerfil)
+INSERT INTO Usuario (idEndereco, idContato, nome, email, senha)
 VALUES 
-(11, 12, 'NewTech', 'recrutamento@newtech.com', NULL);
+(1, 2, 'NewTech', 'recrutamentos@newtech.com', '123');
 
 -- Adicionar nova observacao a candidatura
 GO
@@ -107,7 +109,7 @@ AS BEGIN
 	SELECT * FROM Aplicacoes;
 END
 
-DROP TRIGGER TGR_ADD_OBS_CANDIDATURA
+-- DROP TRIGGER TGR_ADD_OBS_CANDIDATURA
 
 UPDATE Aplicacoes
 SET observacoes = 'Candidato passou para fase 3'

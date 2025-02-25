@@ -1,3 +1,6 @@
+USE TalentBridge
+
+GO
 -- Exibe quantidade de idiomas que os candidatos falam
 CREATE VIEW VW_Qtd_Idioma_Falado_Por_Candidato AS
 	SELECT idioma, COUNT(I.idioma) AS 'qtd_falantes' FROM Idioma I
@@ -69,7 +72,7 @@ JOIN
 JOIN 
 	Usuario U ON E.idUsuario = U.idUsuario
 WHERE 
-    V.dataInicio >= DATEADD(DAY, -30, GETDATE());
+    V.dataInicio <= DATEADD(DAY, 30, GETDATE());
 GO
 
 SELECT * FROM VW_Vagas_Anunciadas_Ha_30d

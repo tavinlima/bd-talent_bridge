@@ -1,3 +1,5 @@
+USE TalentBridge
+
 -- Buscar todos os candidatos que aplicaram para uma vaga
 GO
 CREATE PROCEDURE SP_Candidatos_para_vaga (@IDVaga INT) AS
@@ -40,6 +42,7 @@ GO
 EXEC SP_Vagas_Disponiveis_Por_Empresa '34567890100189'
 
 -- Verifica quais vagas estão com processo seletivo fechado e atualiza o status para indisponível
+
 GO
 CREATE PROCEDURE SP_Atualizar_Status_Vagas_Indisponiveis AS
 BEGIN
